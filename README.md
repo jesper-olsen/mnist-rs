@@ -1,4 +1,4 @@
-### MNIST Parser for Rust 
+# MNIST Parser for Rust 
 
 A simple, fast, and safe Rust crate for parsing the MNIST dataset of handwritten digits.
 
@@ -16,13 +16,13 @@ This library provides a clean API for reading the original IDX file format, a ro
 ## Getting Started
 Follow these steps to get the data and run the included demo application.
 
-# 1. Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/mnist-rust.git
 cd mnist-rust
 ```
-# 2. Download the MNIST Dataset
+### 2. Download the MNIST Dataset
 
 The original download links on Yann LeCun's website are often unavailable. The recommended way to get the data is from the TensorFlow/Keras datasets mirror.
 
@@ -43,7 +43,7 @@ gunzip MNIST/*.gz
 
 Your MNIST directory should now contain the four uncompressed data files.
 
-# 3. Run the Demo Application
+### 3. Run the Demo Application
 The repository includes a demo binary that uses this library to display images.
 
 To show an image as ASCII art in the terminal:
