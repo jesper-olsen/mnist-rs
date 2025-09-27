@@ -19,7 +19,7 @@ Follow these steps to get the data and run the included demo application.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/mnist-rust.git
+git clone https://github.com/jesper-olsen/mnist-rust.git
 cd mnist-rust
 ```
 ### 2. Download the MNIST Dataset
