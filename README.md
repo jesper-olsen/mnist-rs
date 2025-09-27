@@ -30,10 +30,20 @@ Create a directory for the data and download the four files into it:
 
 ```bash
 mkdir MNIST
-curl -o MNIST/train-images-idx3-ubyte.gz http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-images-idx3-ubyte.gz
-curl -o MNIST/train-labels-idx1-ubyte.gz http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-labels-idx1-ubyte.gz
-curl -o MNIST/t10k-images-idx3-ubyte.gz http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-images-idx3-ubyte.gz
-curl -o MNIST/t10k-labels-idx1-ubyte.gz http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-labels-idx1-ubyte.gz
+
+curl -o MNIST/train-images-idx3-ubyte.gz https://storage.googleapis.com/tensorflow/tf-keras-datasets/train-images-idx3-ubyte.gz
+curl -o MNIST/train-labels-idx1-ubyte.gz https://storage.googleapis.com/tensorflow/tf-keras-datasets/train-labels-idx1-ubyte.gz
+curl -o MNIST/t10k-images-idx3-ubyte.gz https://storage.googleapis.com/tensorflow/tf-keras-datasets/t10k-images-idx3-ubyte.gz
+curl -o MNIST/t10k-labels-idx1-ubyte.gz https://storage.googleapis.com/tensorflow/tf-keras-datasets/t10k-labels-idx1-ubyte.gz
+```
+
+Optional - download [Fashion MNIST](https://www.kaggle.com/datasets/zalando-research/fashionmnist) also (same format):
+```
+mkdir MNISTfashion
+curl -o MNISTfashion/train-images-idx3-ubyte.gz http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-images-idx3-ubyte.gz
+curl -o MNISTfashion/train-labels-idx1-ubyte.gz http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-labels-idx1-ubyte.gz
+curl -o MNISTfashion/t10k-images-idx3-ubyte.gz http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-images-idx3-ubyte.gz
+curl -o MNISTfashion/t10k-labels-idx1-ubyte.gz http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-labels-idx1-ubyte.gz
 ```
 Next, decompress the files:
 
