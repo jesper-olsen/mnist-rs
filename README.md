@@ -57,10 +57,36 @@ Your MNIST directory should now contain the four uncompressed data files.
 The repository includes a demo binary that uses this library to display images.
 
 To show an image as ASCII art in the terminal:
-(This command displays image #42 from the training set)
+(This command displays image #2 from the training set)
 
 ```bash
-cargo run -- --data-dir MNIST/ --image-number 42
+cargo run -- --data-dir MNIST/ --image-number 2
+```
+
+Example output:
+```text
+--- Dataset: train | Image #2 | Label: 4 ---
+
+                    .@
+    ..              :*
+    :*              :@
+    @*              @*
+    @*             *@:
+    @*             *@.
+   :@*             @@
+   *@:            *@@
+   *@.          .*@@.
+   *@.     :::@@@*@@
+   :@@@@@@@@@*:.  @@
+    :*****..     .@@
+                 *@:
+                 *@.
+                 *@.
+                 *@.
+                 *@.
+                 *@:
+                 *@:
+                 .@:
 ```
 
 To show an image in a graphical plot with gnuplot:
@@ -72,7 +98,8 @@ First, ensure you have gnuplot installed on your system. Then, run the demo with
 cargo run --features plotting -- --data-dir MNIST/ --dataset test --image-number 100 --plot
 ```
 
-Library Usage
+## Library Usage
+
 To use this crate in your own project, add it to your Cargo.toml:
 
 ``` toml
@@ -98,9 +125,9 @@ fn main() -> Result<(), MnistError> {
     let first_image = &images[0];
     let first_label = labels[0];
 
-    println!("--- First Image (Label: {}) ---", first_label);
+    println!("--- First Image (Label: {first_label}) ---");
     // Print the image as ASCII art
-    println!("{}", first_image);
+    println!("{first_image}");
 
     // Get the image data as a normalized f64 slice
     let pixel_data: [f64; 784] = first_image.as_f64_array();
