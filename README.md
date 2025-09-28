@@ -1,6 +1,6 @@
 # MNIST Parser for Rust 
 
-A simple, fast, and safe Rust crate for parsing the MNIST dataset of handwritten digits.
+A simple, fast, and safe Rust crate for parsing the [MNIST dataset](https://yann.lecun.org/exdb/mnist/index.html) of handwritten digits.
 
 This library provides a clean API for reading the original IDX file format, a robust Image struct for data manipulation, and an optional feature for easy visualization with gnuplot.
 
