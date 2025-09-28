@@ -98,6 +98,8 @@ First, ensure you have gnuplot installed on your system. Then, run the demo with
 cargo run --features plotting -- --data-dir MNIST/ --dataset test --image-number 100 --plot
 ```
 
+![PNG](mnist_100.png)
+
 ## Library Usage
 
 To use this crate in your own project, add it to your Cargo.toml:
@@ -137,7 +139,8 @@ fn main() -> Result<(), MnistError> {
 }
 ```
 
-Demo Application Command-Line Options
+## Demo Application Command-Line Options
+
 The demo binary provides several options to explore the dataset.
 
 ```bash
@@ -145,23 +148,17 @@ The demo binary provides several options to explore the dataset.
 cargo run -- --help
 ```
 ``` text
-A demo application to showcase the mnist-parser library.
+A demo application to showcase the mnist-parser library
 
-Usage: mnist-demo [OPTIONS]
+Usage: main [OPTIONS] --data-dir <DATA_DIR>
 
 Options:
-  -d, --data-dir <DATA_DIR>
-          Path to the directory containing the MNIST dataset files.
-  -i, --image-number <IMAGE_NUMBER>
-          Image number to show [default: 0]
-      --dataset <DATASET>
-          Train/Test set [default: train]
-      --plot
-          Display the images using gnuplot (requires plotting feature).
-  -h, --help
-          Print help
-  -V, --version
-          Print version
+  -d, --data-dir <DATA_DIR>          Path to the directory containing the MNIST dataset files
+  -i, --image-number <IMAGE_NUMBER>  Image number to show [default: 0]
+      --dataset <DATASET>            Train/Test set [default: train]
+      --plot                         Display the images using gnuplot (requires plotting feature)
+  -h, --help                         Print help
+  -V, --version                      Print version
 ```
 
 ## Cargo Feature Flags
