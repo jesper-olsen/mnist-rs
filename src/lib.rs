@@ -189,6 +189,9 @@ impl Mnist {
         let test_labels = read_labels(&dir.join("t10k-labels-idx1-ubyte"))?;
         let test_images = read_images(&dir.join("t10k-images-idx3-ubyte"))?;
 
+        assert!(train_labels.len()==train_labels.len());
+        assert!(test_labels.len()==test_images.len());
+
         Ok(Self {
             train_images,
             train_labels,

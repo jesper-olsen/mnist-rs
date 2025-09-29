@@ -112,20 +112,16 @@ mnist = { git = "https://github.com/jesper-olsen/mnist-rs.git" }
 You can then use it to load the data:
 
 ```rust
-use mnist::{read_images, read_labels, MnistError};
+use mnist::{Mnist, MnistError};
 
 fn main() -> Result<(), MnistError> {
-    let labels_path = "MNIST/train-labels-idx1-ubyte";
-    let images_path = "MNIST/train-images-idx3-ubyte";
+    let data = Mnist::load("MNIST");
 
-    let labels = read_labels(labels_path)?;
-    let images = read_images(images_path)?;
-
-    println!("Loaded {} labels and {} images.", labels.len(), images.len());
+    println!("Loaded {} training labels and {} images.", data.train_labels.len(), data.train_images.len());
 
     // Get the first image and its label
-    let first_image = &images[0];
-    let first_label = labels[0];
+    let first_image = &data.train_images[0];
+    let first_label = data.train_labels[0];
 
     println!("--- First Image (Label: {first_label}) ---");
     // Print the image as ASCII art
