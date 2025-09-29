@@ -1,5 +1,5 @@
 use clap::Parser;
-use mnist::{plot, read_images, read_labels};
+use mnist::{plot, Mnist};
 use std::path::PathBuf;
 
 /// A demo application to showcase the mnist-parser library.
@@ -29,30 +29,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("Attempting to load MNIST data from: {:?}...", args.data_dir);
 
-    let labels_path = args.data_dir.join("train-labels-idx1-ubyte");
-    let images_path = args.data_dir.join("train-images-idx3-ubyte");
-    let test_labels_path = args.data_dir.join("t10k-labels-idx1-ubyte");
-    let test_images_path = args.data_dir.join("t10k-images-idx3-ubyte");
-    let labels = read_labels(&labels_path)?;
-    let images = read_images(&images_path)?;
-    let test_labels = read_labels(&test_labels_path)?;
-    let test_images = read_images(&test_images_path)?;
+    let data = Mnist::load(args.data_dir)?;
+    println!("✓ Successfully loaded {} training labels.", data.train_labels.len());
+    println!("✓ Successfully loaded {} training images.", data.train_images.len());
+    println!("✓ Successfully loaded {} test labels.", data.test_labels.len());
+    println!("✓ Successfully loaded {} test images.", data.test_images.len());
 
-    println!("✓ Successfully loaded {} training labels.", labels.len());
-    println!("✓ Successfully loaded {} training images.", images.len());
-    println!("✓ Successfully loaded {} test labels.", test_labels.len());
-    println!("✓ Successfully loaded {} test images.", test_images.len());
-
-    let pixels = images[0].as_u8_array();
+    let pixels = data.train_images[0].as_u8_array();
     assert_eq!(pixels.len(), 784);
-    assert_eq!(labels.len(), 60000);
-    assert_eq!(images.len(), 60000);
-    assert_eq!(test_labels.len(), 10000);
-    assert_eq!(test_images.len(), 10000);
+    assert_eq!(data.train_labels.len(), 60000);
+    assert_eq!(data.train_images.len(), 60000);
+    assert_eq!(data.test_labels.len(), 10000);
+    assert_eq!(data.test_images.len(), 10000);
 
     let (images, labels) = match args.dataset.as_str() {
-        "train" => (images, labels),
-        "test" => (test_images, test_labels),
+        "train" => (data.train_images, data.train_labels),
+        "test" => (data.test_images, data.test_labels),
         _ => return Err("expected train or test".into()),
     };
 

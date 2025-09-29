@@ -171,3 +171,30 @@ pub fn unflatten_image(image: &[u8]) -> &[[u8; 28]; 28] {
     assert_eq!(image.len(), 28 * 28);
     unsafe { &*(image.as_ptr() as *const [[u8; 28]; 28]) }
 }
+
+pub struct Mnist {
+    pub train_images: Vec<Image>,
+    pub train_labels: Vec<u8>,
+    pub test_images: Vec<Image>,
+    pub test_labels: Vec<u8>,
+}
+
+impl Mnist {
+    pub fn load<P: AsRef<Path>>(dir: P) -> Result<Self, MnistError> {
+        let dir = dir.as_ref();
+
+        let train_labels = read_labels(&dir.join("train-labels-idx1-ubyte"))?;
+        let train_images = read_images(&dir.join("train-images-idx3-ubyte"))?;
+
+        let test_labels = read_labels(&dir.join("t10k-labels-idx1-ubyte"))?;
+        let test_images = read_images(&dir.join("t10k-images-idx3-ubyte"))?;
+
+        Ok(Self {
+            train_images,
+            train_labels,
+            test_images,
+            test_labels,
+        })
+    }
+}
+
