@@ -10,7 +10,7 @@ use gnuplot::{AxesCommon, Figure, Fix};
 use std::fmt;
 use std::fs::File;
 use std::io::{self, BufReader, Read};
-use std::path::PathBuf;
+use std::path::Path;
 
 pub mod error;
 use error::MnistError;
@@ -79,8 +79,8 @@ fn read_u32(reader: &mut BufReader<File>) -> io::Result<u32> {
 }
 
 /// Reads the MNIST label file from the given path.
-pub fn read_labels(path: &PathBuf) -> Result<Vec<u8>, MnistError> {
-    let file = File::open(path)?;
+pub fn read_labels<P: AsRef<Path>>(path: P) -> Result<Vec<u8>, MnistError> {
+    let file = File::open(path.as_ref())?;
     let mut reader = BufReader::new(file);
 
     let magic_number = read_u32(&mut reader)?;
@@ -99,7 +99,7 @@ pub fn read_labels(path: &PathBuf) -> Result<Vec<u8>, MnistError> {
 }
 
 /// Reads the MNIST image file from the given path.
-pub fn read_images(path: &PathBuf) -> Result<Vec<Image>, MnistError> {
+pub fn read_images<P: AsRef<Path>>(path: P) -> Result<Vec<Image>, MnistError> {
     let file = File::open(path)?;
     let mut reader = BufReader::new(file);
 
