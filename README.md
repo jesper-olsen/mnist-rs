@@ -117,7 +117,7 @@ use mnist::{Mnist, MnistError};
 fn main() -> Result<(), MnistError> {
     let data = Mnist::load("MNIST");
 
-    println!("Loaded {} training labels and {} images.", data.train_labels.len(), data.train_images.len());
+    println!("Loaded {} training and {} test images.", data.train_images.len(), data.test_images.len());
 
     // Get the first image and its label
     let first_image = &data.train_images[0];
