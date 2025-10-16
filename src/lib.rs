@@ -49,6 +49,14 @@ impl Image {
         Image { pixels }
     }
 
+    pub const fn width(&self) -> usize {
+        IMAGE_WIDTH
+    }
+
+    pub const fn height(&self) -> usize {
+        IMAGE_HEIGHT
+    }
+
     /// Returns the raw pixel data as a slice of bytes.
     pub fn as_u8_array(&self) -> &[u8] {
         &self.pixels
@@ -183,14 +191,14 @@ impl Mnist {
     pub fn load<P: AsRef<Path>>(dir: P) -> Result<Self, MnistError> {
         let dir = dir.as_ref();
 
-        let train_labels = read_labels(&dir.join("train-labels-idx1-ubyte"))?;
-        let train_images = read_images(&dir.join("train-images-idx3-ubyte"))?;
+        let train_labels = read_labels(dir.join("train-labels-idx1-ubyte"))?;
+        let train_images = read_images(dir.join("train-images-idx3-ubyte"))?;
 
-        let test_labels = read_labels(&dir.join("t10k-labels-idx1-ubyte"))?;
-        let test_images = read_images(&dir.join("t10k-images-idx3-ubyte"))?;
+        let test_labels = read_labels(dir.join("t10k-labels-idx1-ubyte"))?;
+        let test_images = read_images(dir.join("t10k-images-idx3-ubyte"))?;
 
-        assert!(train_labels.len()==train_labels.len());
-        assert!(test_labels.len()==test_images.len());
+        assert!(train_labels.len() == train_labels.len());
+        assert!(test_labels.len() == test_images.len());
 
         Ok(Self {
             train_images,
@@ -200,4 +208,3 @@ impl Mnist {
         })
     }
 }
-

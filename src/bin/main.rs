@@ -1,5 +1,5 @@
 use clap::Parser;
-use mnist::{plot, Mnist};
+use mnist::{Mnist, plot};
 use std::path::PathBuf;
 
 /// A demo application to showcase the mnist-parser library.
@@ -30,10 +30,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Attempting to load MNIST data from: {:?}...", args.data_dir);
 
     let data = Mnist::load(args.data_dir)?;
-    println!("✓ Successfully loaded {} training labels.", data.train_labels.len());
-    println!("✓ Successfully loaded {} training images.", data.train_images.len());
-    println!("✓ Successfully loaded {} test labels.", data.test_labels.len());
-    println!("✓ Successfully loaded {} test images.", data.test_images.len());
+    println!(
+        "✓ Successfully loaded {} training labels.",
+        data.train_labels.len()
+    );
+    println!(
+        "✓ Successfully loaded {} training images.",
+        data.train_images.len()
+    );
+    println!(
+        "✓ Successfully loaded {} test labels.",
+        data.test_labels.len()
+    );
+    println!(
+        "✓ Successfully loaded {} test images.",
+        data.test_images.len()
+    );
 
     let pixels = data.train_images[0].as_u8_array();
     assert_eq!(pixels.len(), 784);
