@@ -15,8 +15,8 @@ use std::path::Path;
 pub mod error;
 use error::MnistError;
 
-const IMAGE_WIDTH: usize = 28;
-const IMAGE_HEIGHT: usize = 28;
+pub const IMAGE_WIDTH: usize = 28;
+pub const IMAGE_HEIGHT: usize = 28;
 pub const NPIXELS: usize = IMAGE_WIDTH * IMAGE_HEIGHT;
 
 /// Represents a single 28x28 MNIST image.
