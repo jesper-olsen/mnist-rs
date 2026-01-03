@@ -15,6 +15,7 @@ use std::path::Path;
 pub mod error;
 use error::MnistError;
 
+pub const NUM_LABELS: usize = 10;
 pub const IMAGE_WIDTH: usize = 28;
 pub const IMAGE_HEIGHT: usize = 28;
 pub const NPIXELS: usize = IMAGE_WIDTH * IMAGE_HEIGHT;
