@@ -22,7 +22,7 @@ pub const NPIXELS: usize = IMAGE_WIDTH * IMAGE_HEIGHT;
 
 /// Represents a single 28x28 MNIST image.
 pub struct Image {
-    pixels: [u8; NPIXELS], // row-major order
+    pub pixels: [u8; NPIXELS], // row-major order
 }
 
 impl fmt::Display for Image {
