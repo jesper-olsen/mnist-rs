@@ -22,6 +22,7 @@ pub const IMAGE_HEIGHT: usize = 28;
 pub const NPIXELS: usize = IMAGE_WIDTH * IMAGE_HEIGHT;
 
 /// Represents a single 28x28 MNIST image.
+#[derive(Clone)]
 pub struct Image {
     pub pixels: [u8; NPIXELS], // row-major order
 }
