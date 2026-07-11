@@ -7,6 +7,7 @@
 #[cfg(feature = "plotting")]
 use gnuplot::{AxesCommon, Figure, Fix};
 
+use rand::{Rng, RngExt};
 use std::fmt;
 use std::fs::File;
 use std::io::{self, BufReader, Read};
@@ -78,6 +79,44 @@ impl Image {
     /// Returns the pixel data as a normalized f64 array (values 0.0 to 1.0).
     pub fn as_f64_array(&self) -> [f64; NPIXELS] {
         self.pixels.map(|p| p as f64 / 255.0)
+    }
+
+    /// Returns a new Image shifted randomly by up to `max_shift` pixels in any direction.
+    pub fn random_shift(&self, rng: &mut impl Rng, max_shift: i32) -> Self {
+        let shift_x = rng.random_range(-max_shift..=max_shift);
+        let shift_y = rng.random_range(-max_shift..=max_shift);
+
+        let mut target_pixels = [0u8; NPIXELS];
+
+        if shift_x == 0 && shift_y == 0 {
+            target_pixels.copy_from_slice(&self.pixels);
+            return Image {
+                pixels: target_pixels,
+            };
+        }
+
+        let w = IMAGE_WIDTH as i32;
+        let h = (NPIXELS / IMAGE_WIDTH) as i32;
+
+        let y_start = 0.max(-shift_y) as usize;
+        let y_end = (h as usize).min((h - shift_y) as usize);
+        let x_start = 0.max(-shift_x) as usize;
+        let x_end = (w as usize).min((w - shift_x) as usize);
+        let copy_width = x_end - x_start;
+
+        for y in y_start..y_end {
+            let src_y = (y as i32 + shift_y) as usize;
+            let src_x = (x_start as i32 + shift_x) as usize;
+            let dst_idx = y * IMAGE_WIDTH + x_start;
+            let src_idx = src_y * IMAGE_WIDTH + src_x;
+
+            target_pixels[dst_idx..dst_idx + copy_width]
+                .copy_from_slice(&self.pixels[src_idx..src_idx + copy_width]);
+        }
+
+        Image {
+            pixels: target_pixels,
+        }
     }
 }
 
