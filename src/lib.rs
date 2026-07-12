@@ -82,11 +82,12 @@ impl Image {
         self.pixels.map(|p| p as f64 / 255.0)
     }
 
-    /// Returns a new Image shifted randomly by up to `max_shift` pixels in any direction.
-    pub fn random_shift(&self, rng: &mut impl Rng, max_shift: i32) -> Self {
-        let shift_x = rng.random_range(-max_shift..=max_shift);
-        let shift_y = rng.random_range(-max_shift..=max_shift);
-
+    /// Returns a new Image shifted by the given amount in each direction.
+    ///
+    /// Positive `shift_x` moves content right, positive `shift_y` moves content down.
+    /// Pixels shifted out of frame are dropped; vacated pixels are filled with 0 (black).
+    /// This is the deterministic core used by both `random_shift` and `all_shifts`.
+    pub fn shifted(&self, shift_x: i32, shift_y: i32) -> Self {
         let mut target_pixels = [0u8; NPIXELS];
 
         if shift_x == 0 && shift_y == 0 {
@@ -118,6 +119,30 @@ impl Image {
         Image {
             pixels: target_pixels,
         }
+    }
+
+    /// Returns a new Image shifted randomly by up to `max_shift` pixels in any direction.
+    pub fn random_shift(&self, rng: &mut impl Rng, max_shift: i32) -> Self {
+        let shift_x = rng.random_range(-max_shift..=max_shift);
+        let shift_y = rng.random_range(-max_shift..=max_shift);
+        self.shifted(shift_x, shift_y)
+    }
+
+    /// Returns every shift variant of this image for `shift_x, shift_y` each ranging
+    /// over `-max_shift..=max_shift`, including the unshifted original (0, 0).
+    ///
+    /// For `max_shift = 1` this yields 9 images; for `max_shift = n` it yields
+    /// `(2n + 1)^2` images. Useful when you want exhaustive augmentation rather
+    /// than sampling a random subset via `random_shift`.
+    pub fn all_shifts(&self, max_shift: i32) -> Vec<Image> {
+        let side = (2 * max_shift + 1) as usize;
+        let mut out = Vec::with_capacity(side * side);
+        for shift_y in -max_shift..=max_shift {
+            for shift_x in -max_shift..=max_shift {
+                out.push(self.shifted(shift_x, shift_y));
+            }
+        }
+        out
     }
 }
 
@@ -247,5 +272,42 @@ impl Mnist {
             test_images,
             test_labels,
         })
+    }
+
+    /// Loads the dataset and exhaustively augments the training set in place with
+    /// every shift variant in `-max_shift..=max_shift` (including the unshifted
+    /// original). The test set is left untouched, since augmenting eval data would
+    /// leak correlated variants across the train/test boundary.
+    ///
+    /// Training set size grows by a factor of `(2 * max_shift + 1)^2`, so for
+    /// `max_shift = 1` (the sweet spot you found) that's a 9x increase.
+    pub fn load_with_shift_augmentation<P: AsRef<Path>>(
+        dir: P,
+        max_shift: i32,
+    ) -> Result<Self, MnistError> {
+        let mut mnist = Self::load(dir)?;
+        mnist.augment_train_with_shifts(max_shift);
+        Ok(mnist)
+    }
+
+    /// Expands `train_images`/`train_labels` in place with every shift variant
+    /// of each existing training image, `-max_shift..=max_shift` in both axes.
+    pub fn augment_train_with_shifts(&mut self, max_shift: i32) {
+        let side = (2 * max_shift + 1) as usize;
+        let variants_per_image = side * side;
+        let n = self.train_images.len();
+
+        let mut new_images = Vec::with_capacity(n * variants_per_image);
+        let mut new_labels = Vec::with_capacity(n * variants_per_image);
+
+        for (image, &label) in self.train_images.iter().zip(self.train_labels.iter()) {
+            for shifted in image.all_shifts(max_shift) {
+                new_images.push(shifted);
+                new_labels.push(label);
+            }
+        }
+
+        self.train_images = new_images;
+        self.train_labels = new_labels;
     }
 }
